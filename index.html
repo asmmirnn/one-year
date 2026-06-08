@@ -20,22 +20,18 @@ body{
     justify-content:center;
     align-items:center;
     text-align:center;
-    background:linear-gradient(
-        135deg,
-        #ffd7e8 0%,
-        #f8b5d0 40%,
-        #d58ab8 70%,
-        #8e5b79 100%
-    );
+    background:linear-gradient(135deg,#ffd7e8,#f8b5d0,#d58ab8,#8e5b79);
     position:relative;
 }
 
+/* Контейнер */
 .container{
     max-width:800px;
-    padding:30px;
+    padding:25px;
     z-index:2;
 }
 
+/* Экран */
 .screen{
     animation:fadeIn .8s ease;
 }
@@ -44,15 +40,34 @@ body{
     display:none;
 }
 
+/* Общий текст */
 .text{
     color:white;
     font-size:2rem;
-    font-weight:700;
+    font-weight:800;
     line-height:1.6;
-    text-shadow:0 2px 10px rgba(0,0,0,.15);
+    text-shadow:0 2px 10px rgba(0,0,0,.2);
     min-height:120px;
 }
 
+/* Финальный текст */
+.final-text{
+    font-size:1.15rem;
+    line-height:1.9;
+
+    max-height:65vh;
+    overflow-y:auto;
+
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(10px);
+
+    border-radius:25px;
+    padding:25px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.2);
+}
+
+/* Сердце */
 .heart{
     font-size:120px;
     cursor:pointer;
@@ -60,16 +75,16 @@ body{
     user-select:none;
 }
 
+/* Кнопки */
 button{
-    margin-top:25px;
-    padding:15px 30px;
+    margin-top:20px;
+    padding:14px 28px;
     border:none;
     border-radius:30px;
     background:rgba(255,255,255,.25);
-    backdrop-filter:blur(10px);
     color:white;
     font-size:1.1rem;
-    font-weight:600;
+    font-weight:700;
     cursor:pointer;
     transition:.3s;
 }
@@ -79,28 +94,18 @@ button:hover{
     background:rgba(255,255,255,.4);
 }
 
+/* Анимации */
 @keyframes pulse{
-    0%,100%{
-        transform:scale(1);
-    }
-    50%{
-        transform:scale(1.15);
-    }
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.15);}
 }
 
 @keyframes fadeIn{
-    from{
-        opacity:0;
-        transform:translateY(20px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
+    from{opacity:0;transform:translateY(15px);}
+    to{opacity:1;transform:translateY(0);}
 }
 
-/* Сердечки */
-
+/* Летающие сердечки */
 .hearts{
     position:absolute;
     inset:0;
@@ -110,29 +115,14 @@ button:hover{
 
 .heart-bg{
     position:absolute;
-    color:rgba(255,255,255,.4);
+    color:rgba(255,255,255,.35);
     animation:float linear infinite;
-    user-select:none;
 }
 
 @keyframes float{
-    from{
-        transform:translateY(110vh);
-        opacity:0;
-    }
-
-    10%{
-        opacity:1;
-    }
-
-    90%{
-        opacity:1;
-    }
-
-    to{
-        transform:translateY(-120px);
-        opacity:0;
-    }
+    from{transform:translateY(110vh);opacity:0;}
+    10%{opacity:1;}
+    to{transform:translateY(-120px);opacity:0;}
 }
 </style>
 </head>
@@ -143,38 +133,43 @@ button:hover{
 
 <div class="container">
 
+    <!-- 1 экран -->
     <div id="screen1" class="screen">
         <div class="text">Нажми ❤️</div>
         <div class="heart" onclick="showQuestion()">❤️</div>
     </div>
 
+    <!-- 2 экран -->
     <div id="screen2" class="hidden screen">
         <div id="text2" class="text"></div>
         <button onclick="showMessage()">Да</button>
         <button onclick="showMessage()">Конечно да!</button>
     </div>
 
+    <!-- 3 экран -->
     <div id="screen3" class="hidden screen">
         <div id="text3" class="text"></div>
         <button onclick="showFinal()">Что?</button>
     </div>
 
+    <!-- 4 экран -->
     <div id="screen4" class="hidden screen">
-        <div id="text4" class="text"></div>
+        <div id="text4" class="text final-text"></div>
     </div>
 
 </div>
 
 <script>
 
-function typeWriter(elementId, text, speed = 40){
+/* Печать текста */
+function typeWriter(id, text, speed=35){
     let i = 0;
-    const element = document.getElementById(elementId);
-    element.innerHTML = "";
+    const el = document.getElementById(id);
+    el.innerHTML = "";
 
     function typing(){
         if(i < text.length){
-            element.innerHTML += text.charAt(i);
+            el.innerHTML += text.charAt(i);
             i++;
             setTimeout(typing, speed);
         }
@@ -182,24 +177,19 @@ function typeWriter(elementId, text, speed = 40){
     typing();
 }
 
+/* Переключения экранов */
 function showQuestion(){
     document.getElementById("screen1").classList.add("hidden");
     document.getElementById("screen2").classList.remove("hidden");
 
-    typeWriter(
-        "text2",
-        "Знаешь какой сегодня день?"
-    );
+    typeWriter("text2","Знаешь какой сегодня день?");
 }
 
 function showMessage(){
     document.getElementById("screen2").classList.add("hidden");
     document.getElementById("screen3").classList.remove("hidden");
 
-    typeWriter(
-        "text3",
-        "Сегодня ровно год, как мы нашли друг друга и я хочу тебе кое-что сказать"
-    );
+    typeWriter("text3","Сегодня ровно год, как мы нашли друг друга и я хочу тебе кое-что сказать");
 }
 
 function showFinal(){
@@ -208,38 +198,29 @@ function showFinal(){
 
     typeWriter(
         "text4",
-        "Год назад я даже и подумать не могла, что стану твоим совенком. ❤️\n\nЯ хочу сказать спасибо тебе, что делаешь меня увереннее и даешь опору в трудные для меня дни, спасибо, что приносишь так много радости в мою жизнь, а самое главное — любовь.\n\nЯ люблю тебя, мой дорогой и любимый Сашенька ❤️",
+        "Год назад я даже и подумать не могла, что стану твоим совенком. ❤️\n\nЯ хочу сказать спасибо тебе, что делаешь меня увереннее и даешь опору в трудные дни. Спасибо, что приносишь столько радости и любви в мою жизнь.\n\nЯ люблю тебя, мой дорогой Сашенька ❤️",
         25
     );
 }
 
-/* Летающие сердечки */
-
-const heartsContainer = document.getElementById("hearts");
+/* Сердечки фон */
+const hearts = document.getElementById("hearts");
 
 function createHeart(){
-    const heart = document.createElement("div");
+    const h = document.createElement("div");
+    h.classList.add("heart-bg");
+    h.innerHTML = "❤";
 
-    heart.classList.add("heart-bg");
-    heart.innerHTML = "❤";
+    h.style.left = Math.random()*100 + "%";
+    h.style.fontSize = (15 + Math.random()*20) + "px";
+    h.style.animationDuration = (6 + Math.random()*8) + "s";
 
-    heart.style.left = Math.random() * 100 + "%";
+    hearts.appendChild(h);
 
-    const size = Math.random() * 25 + 15;
-
-    heart.style.fontSize = size + "px";
-
-    heart.style.animationDuration =
-        Math.random() * 8 + 8 + "s";
-
-    heartsContainer.appendChild(heart);
-
-    setTimeout(()=>{
-        heart.remove();
-    },16000);
+    setTimeout(()=>h.remove(),14000);
 }
 
-setInterval(createHeart, 350);
+setInterval(createHeart,300);
 
 </script>
 
