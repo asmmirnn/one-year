@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Для Сашеньки ❤️</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    height:100vh;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    background:linear-gradient(
+        135deg,
+        #ffd7e8 0%,
+        #f8b5d0 40%,
+        #d58ab8 70%,
+        #8e5b79 100%
+    );
+    position:relative;
+}
+
+.container{
+    max-width:800px;
+    padding:30px;
+    z-index:2;
+}
+
+.screen{
+    animation:fadeIn .8s ease;
+}
+
+.hidden{
+    display:none;
+}
+
+.text{
+    color:white;
+    font-size:2rem;
+    font-weight:700;
+    line-height:1.6;
+    text-shadow:0 2px 10px rgba(0,0,0,.15);
+    min-height:120px;
+}
+
+.heart{
+    font-size:120px;
+    cursor:pointer;
+    animation:pulse 1.5s infinite;
+    user-select:none;
+}
+
+button{
+    margin-top:25px;
+    padding:15px 30px;
+    border:none;
+    border-radius:30px;
+    background:rgba(255,255,255,.25);
+    backdrop-filter:blur(10px);
+    color:white;
+    font-size:1.1rem;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+button:hover{
+    transform:scale(1.08);
+    background:rgba(255,255,255,.4);
+}
+
+@keyframes pulse{
+    0%,100%{
+        transform:scale(1);
+    }
+    50%{
+        transform:scale(1.15);
+    }
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* Сердечки */
+
+.hearts{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+    z-index:1;
+}
+
+.heart-bg{
+    position:absolute;
+    color:rgba(255,255,255,.4);
+    animation:float linear infinite;
+    user-select:none;
+}
+
+@keyframes float{
+    from{
+        transform:translateY(110vh);
+        opacity:0;
+    }
+
+    10%{
+        opacity:1;
+    }
+
+    90%{
+        opacity:1;
+    }
+
+    to{
+        transform:translateY(-120px);
+        opacity:0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="hearts" id="hearts"></div>
+
+<div class="container">
+
+    <div id="screen1" class="screen">
+        <div class="text">Нажми ❤️</div>
+        <div class="heart" onclick="showQuestion()">❤️</div>
+    </div>
+
+    <div id="screen2" class="hidden screen">
+        <div id="text2" class="text"></div>
+        <button onclick="showMessage()">Да</button>
+        <button onclick="showMessage()">Конечно да!</button>
+    </div>
+
+    <div id="screen3" class="hidden screen">
+        <div id="text3" class="text"></div>
+        <button onclick="showFinal()">Что?</button>
+    </div>
+
+    <div id="screen4" class="hidden screen">
+        <div id="text4" class="text"></div>
+    </div>
+
+</div>
+
+<script>
+
+function typeWriter(elementId, text, speed = 40){
+    let i = 0;
+    const element = document.getElementById(elementId);
+    element.innerHTML = "";
+
+    function typing(){
+        if(i < text.length){
+            element.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(typing, speed);
+        }
+    }
+    typing();
+}
+
+function showQuestion(){
+    document.getElementById("screen1").classList.add("hidden");
+    document.getElementById("screen2").classList.remove("hidden");
+
+    typeWriter(
+        "text2",
+        "Знаешь какой сегодня день?"
+    );
+}
+
+function showMessage(){
+    document.getElementById("screen2").classList.add("hidden");
+    document.getElementById("screen3").classList.remove("hidden");
+
+    typeWriter(
+        "text3",
+        "Сегодня ровно год, как мы нашли друг друга и я хочу тебе кое-что сказать"
+    );
+}
+
+function showFinal(){
+    document.getElementById("screen3").classList.add("hidden");
+    document.getElementById("screen4").classList.remove("hidden");
+
+    typeWriter(
+        "text4",
+        "Год назад я даже и подумать не могла, что стану твоим совенком. ❤️\n\nЯ хочу сказать спасибо тебе, что делаешь меня увереннее и даешь опору в трудные для меня дни, спасибо, что приносишь так много радости в мою жизнь, а самое главное — любовь.\n\nЯ люблю тебя, мой дорогой и любимый Сашенька ❤️",
+        25
+    );
+}
+
+/* Летающие сердечки */
+
+const heartsContainer = document.getElementById("hearts");
+
+function createHeart(){
+    const heart = document.createElement("div");
+
+    heart.classList.add("heart-bg");
+    heart.innerHTML = "❤";
+
+    heart.style.left = Math.random() * 100 + "%";
+
+    const size = Math.random() * 25 + 15;
+
+    heart.style.fontSize = size + "px";
+
+    heart.style.animationDuration =
+        Math.random() * 8 + 8 + "s";
+
+    heartsContainer.appendChild(heart);
+
+    setTimeout(()=>{
+        heart.remove();
+    },16000);
+}
+
+setInterval(createHeart, 350);
+
+</script>
+
+</body>
+</html>
